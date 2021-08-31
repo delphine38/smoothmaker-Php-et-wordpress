@@ -1,0 +1,43 @@
+/*
+Theme Name:Limpa Child
+Destcription: Thème enfant du thème Limpia
+Author: Delphine
+Autrhor URI: https://site.fr
+Template: Limpia
+Version:1.0
+ */
+/*********
+Articles relatif
+*******/
+/****taille des images**/
+.jp-relatedposts img{
+    height: 250px;
+    object-fit:cover
+}
+/*********
+Angle H1
+*******/
+.template-home h1{
+    position: relative;
+
+}
+.template-home h1::before {
+    content: "";
+    height: 50px;
+    width: 150px;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    position: absolute;
+}
+
+
+/*********
+Footer
+*******/
+.site-info {
+    border-top: 1px solid black;
+    margin-top: 50px;
+    padding-top: 50px;
+    text-align: center;
+}
+
