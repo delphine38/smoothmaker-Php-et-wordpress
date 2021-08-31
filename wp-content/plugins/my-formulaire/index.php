@@ -26,9 +26,6 @@ class MyFormulaire
         });
 
 
-
-
-
         /**
          * __FILE__ permet de pointer vers le fichier courant
          * on indique ensuite le nom de la classe et de la méthode à lancer
@@ -49,22 +46,37 @@ class MyFormulaire
     {
         //s'il y a une clé [email] dans le $_POST, on vient le récupérer pour l'enregistrer dans la base
         if (isset($_POST['my-email']) && !empty($_POST['my-email'])) {
+
             //on stocke la valeur saisie dans l'input dans une variable
             $email = $_POST['my-email'];
 
-            //on récupère de nouveau l'instance de la classe permettant de manipuler la BDD
-            global $wpdb;
+            if(is-email($email)) {
 
-           $contact = $wpdb->get_row("
-           SELECT * FROM {$wpdb->prefix}my_formulaire
-           WHERE email= '$email'; 
-           ");
+                //on récupère de nouveau l'instance de la classe permettant de manipuler la BDD
+                global $wpdb;
 
-           if(is_null($contact)){
-               $wpdb->insert("{$wpdb->prefix}my_formulaire", ["email" => $email]);
-           }else{
-               //message erreur ce contact existe déjà
-           }
+                $user = $wpdb->get_row("
+                   SELECT * FROM {$wpdb->prefix}my_formulaire
+                   WHERE email= '$email'; 
+                   ");
+
+                if (is_null($user)) {
+                    $datas = array("email" => $email);
+
+
+                    if (isset($_POST['my-formulaire-mail']) && !empty($_POST['my-formulaire-mail'])) {
+                        $datas["name"] = $_POST['my-formulaire-mail'];
+                    }
+
+
+                    //on execute la requete sql d'insert qui vient rajouter les données
+                    $wpdb->insert("{$wpdb->prefix}my_formulaire", $email);
+                }
+
+                else{}//erreur mail non renseigner
+            }
+
+
 
 
 
@@ -106,6 +118,7 @@ class MyFormulaire
         CREATE TABLE IF NOT EXISTS {$wpdb->prefix}my_formulaire 
         (id INT AUTO_INCREMENT PRIMARY KEY,
         email VARCHAR(255) NOT NULL UNIQUE);
+        name VARCHAR (50) NULL
             ");
         }
 

@@ -42,6 +42,9 @@ class MyFormulaire_Widget extends WP_Widget{
         echo( '
     <form action="" method="POST">
         <p>
+        
+            <label for="my-formulaire-name">Votre nom :</label>
+            <input type="text" name="my-formulaire-name" id="my-formulaire-name">
             
             <label for="my-email">Votre email :</label>
             <input type="email" name="my-email" id="my-email">
