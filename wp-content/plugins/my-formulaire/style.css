@@ -1,0 +1,8 @@
+.my-formulaire-info{
+    background: red;
+    border: 3px solid black ;
+    width: 300px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}

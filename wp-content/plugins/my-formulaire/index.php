@@ -37,10 +37,32 @@ class MyFormulaire
         //appel de la méthode uninstall() à la désinstallation du plugin
         register_uninstall_hook(__FILE__, array('MyFormulaire', 'uninstall'));
 
+        //charger les fichiers
+        add_action("init", array($this, "loadFiles"));
+
+
         //fonction qui est appelée à l’instant où l’application est chargée et où elle s’apprête à effectuer le rendu du thème pour la page demandée
-        add_action('wp_loaded', array($this, 'saveEmail'));
+        add_action('wp_loaded', array($this, 'saveEmail'), 10);
+        add_action('wp_loaded', array($this, 'checkInfo'), 20);
+        //add_action permet de déclancher l'action au chargement
 
+    }
+    public static function install()
+    {
+        //on récupère l'instance de la classe permettant de manipuler la BDD
+        global $wpdb;
 
+        /**
+         * On vient créer la table, si elle n'existe pas déjà
+         * $wpdb->prefix : contient le préfixe défini à la création pour cette BDD
+         * l'id est autoincrémenté et l'email doit être unique
+         */
+        $wpdb->query("
+        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}my_formulaire 
+        (id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) NOT NULL UNIQUE);
+        name VARCHAR (50) NULL
+            ");
     }
 
     public function saveEmail()
@@ -125,27 +147,28 @@ class MyFormulaire
                 $wpdb->insert("{$wpdb->prefix}my_formulaire", array('email' => $email));
             }
         }
-    }
 
+        //affiche le message
+    public function checkInfo(){
+        $myFormulaire_Session = new MyFormulaire_Session();
 
-
-    public static function install()
-    {
-        //on récupère l'instance de la classe permettant de manipuler la BDD
-        global $wpdb;
-
-        /**
-         * On vient créer la table, si elle n'existe pas déjà
-         * $wpdb->prefix : contient le préfixe défini à la création pour cette BDD
-         * l'id est autoincrémenté et l'email doit être unique
-         */
-        $wpdb->query("
-        CREATE TABLE IF NOT EXISTS {$wpdb->prefix}my_formulaire 
-        (id INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(255) NOT NULL UNIQUE);
-        name VARCHAR (50) NULL
+        $message = $myFormulaire_Session->getMessage();
+        if($message){
+            echo ("
+                <p class='my-formulaire-info " . $message["type"] . "'>
+                    " . $message["message"] . "
+                </p>
             ");
         }
+
+    }
+
+    public function loadFiles(){
+        //on veut charger le css
+        wp_register_style("my-formulaire-css", plugins_url("style.css", __FILE__));
+        wp_enqueue_style("my-formulaire-css");
+    }
+
 
     public static function uninstall()
     {
