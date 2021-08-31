@@ -11,6 +11,7 @@
 
 //on fait appel à la page qui contient le code du widget afin de pouvoir le charger
 require_once 'formulairewidget.php';
+require_once 'formulairesession.php';
 
 
 class MyFormulaire
@@ -44,8 +45,14 @@ class MyFormulaire
 
     public function saveEmail()
     {
+        $myFormulaire_Session = new MyFormulaire_Session();
+
+
         //s'il y a une clé [email] dans le $_POST, on vient le récupérer pour l'enregistrer dans la base
         if (isset($_POST['my-email']) && !empty($_POST['my-email'])) {
+
+            //j'instancie my-formulaire_session
+
 
             //on stocke la valeur saisie dans l'input dans une variable
             $email = $_POST['my-email'];
@@ -70,11 +77,29 @@ class MyFormulaire
 
 
                     //on execute la requete sql d'insert qui vient rajouter les données
-                    $wpdb->insert("{$wpdb->prefix}my_formulaire", $email);
-                }
+                   $result = $wpdb->insert("{$wpdb->prefix}my_formulaire", $datas);
+                    //message pour dire que l'utilisateur a bien été ajouter a la newsletter
 
-                else{}//erreur mail non renseigner
-            }
+                    if($result === false) {
+                        $myFormulaire_Session->createMessage("error", "Une erreur est survenue, veuillez réessayer ulterieurement");
+                    }else{
+                        $myFormulaire_Session->createMessage("success", "Bien inscrit à la newsletter");
+
+                    }
+
+                     } else {
+                        //erreur déjà inscrit en base de données
+                        $myFormulaire_Session->createMessage("error", "Déjà inscrit à la newsletter");
+                    }
+                        }else{
+                            //erreur mauvais mail
+                            $myFormulaire_Session->createMessage("error", "Email incorrect");
+
+                        }
+                            }else{
+                            //erreur mail non renseigner
+                            $myFormulaire_Session->createMessage("error", "Vous n'avez pas mis d'email");
+        }
 
 
 
