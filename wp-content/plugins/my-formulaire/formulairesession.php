@@ -17,12 +17,13 @@ class MyFormulaire_Session {
 
     //recuperer le message
     public function getMessage(){
-        if(isset($_SESSION["my-formulaire"]) && count($_SESSION["my-formulaire"]) > 0){
-            return $_SESSION["my-formulaire"];
-        }else{
-            
-        }
+
+        return isset($_SESSION["my-formulaire"]) &&
+            count($_SESSION["my-formulaire"]) > 0 ? $_SESSION["my-formulaire"] : false;
     }
 
-
+    //fonction pour détruire le message
+    public function destroy(){
+        $_SESSION["my-formulaire"] = array();
+    }
 }
