@@ -54,8 +54,25 @@ class MyFormulaireadmin{
     public function generateSubscriberHtml(){
         echo "<h1>" .get_admin_page_title(). "</h1>";
         echo "Liste des inscrits";
+        echo "<table style='border-collapse: collapse'>
+                    <thead>
+                        <tr>
+                            <th>Nom : </th>
+                            <th>Email : </th>
+                        </tr>
+                     </thead>
+               <tbody>";
         $suscribers = $this->getAllSuscribers();
-        var_dump($suscribers);
+
+        foreach($suscribers as $suscriber){
+            echo "<tr>
+                       <td style='width: 150px; border: 1px solid black'>Nom : {$suscriber->name}</td>
+                       <td style='width: 300px; border: 1px solid black'>Email : {$suscriber->email}</td>
+                </tr>";
+        }
+
+        echo "</tbody></table>";
+
 
     }
 
