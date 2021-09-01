@@ -12,6 +12,7 @@
 //on fait appel à la page qui contient le code du widget afin de pouvoir le charger
 require_once 'formulairewidget.php';
 require_once 'formulairesession.php';
+require_once 'myformulaireadmin.php';
 
 
 class MyFormulaire
@@ -48,6 +49,8 @@ class MyFormulaire
         add_action('wp_loaded', array($this, 'checkInfo'), 20);
         //add_action permet de déclancher l'action au chargement
 
+        new myformulaireadmin();
+
     }
     public static function install()
     {
@@ -81,7 +84,7 @@ class MyFormulaire
             //on stocke la valeur saisie dans l'input dans une variable
             $email = $_POST['my-email'];
 
-            if(is-email($email)) {
+            if(is_email($email)) {
 
                 //on récupère de nouveau l'instance de la classe permettant de manipuler la BDD
                 global $wpdb;
@@ -125,29 +128,6 @@ class MyFormulaire
                             $myFormulaire_Session->createMessage("error", "Vous n'avez pas mis d'email");
         }
 
-
-
-
-
-            /**
-             * on fait une requête SELECT pour vérifier s'il n'est pas déjà dans la base.
-             * retourne null en cas d'échec
-             */
-            $user = $wpdb->get_row("
-                SELECT * FROM {$wpdb->prefix}my_formulaire 
-                WHERE email = 'my-email'
-            ");
-
-            //on ne veut insérer l'email que s'il n'est pas déjà dans la base et que donc $user est null
-            if (is_null($user)) {
-
-                /**
-                 * la méthode insert attend 2 informations :
-                 * - le nom de la table dans laquelle insérer
-                 * - les données à insérer sous la forme d'un tableau associatif ["nom_colonne" => valeur]
-                 */
-                $wpdb->insert("{$wpdb->prefix}my_formulaire", array('email' => $email));
-            }
         }
 
         //affiche le message
