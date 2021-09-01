@@ -6,3 +6,16 @@
     bottom: 30px;
     right: 30px;
 }
+
+.my-formulaire-info .error{
+    background: pink;
+    border: 3px solid red;
+    color: red;
+
+}
+
+.my-formulaire-info .succe{
+    background: green;
+    border: 3px solid darkgreen;
+    color: red;
+}

@@ -26,6 +26,8 @@ class MyFormulaire
             register_widget('MyFormulaire_Widget');
         });
 
+        add_action('init', array('MyFormulaire', 'loadFiles'));
+
 
         /**
          * __FILE__ permet de pointer vers le fichier courant
@@ -159,11 +161,18 @@ class MyFormulaire
                     " . $message["message"] . "
                 </p>
             ");
+            //methode destroy() pour supprimer les messages
+            $myFormulaire_Session->destroy();
         }
 
     }
 
     public function loadFiles(){
+
+        //on veut charger le js
+        wp_register_script("my-formulaire-js", plugins_url("main.js", __FILE__));
+        wp_enqueue_script("my-formulaire-js");
+
         //on veut charger le css
         wp_register_style("my-formulaire-css", plugins_url("style.css", __FILE__));
         wp_enqueue_style("my-formulaire-css");
