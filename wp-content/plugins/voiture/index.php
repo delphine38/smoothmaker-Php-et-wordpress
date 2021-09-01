@@ -14,10 +14,9 @@
 require_once 'formulairevoiture.php';
 
 
-class formulaire extends WP_Widget{
+class Formulaire {
     public function __construct(){
-        parent::__construct( 'formulaire', 'Formulaire voiture', array( 'description' => "Formulaire d'ajout de voiture'." ) );
-
+        new formulairevoiture();
         add_action("widget init", function (){
             register_widget("formulairewidget");
         });
