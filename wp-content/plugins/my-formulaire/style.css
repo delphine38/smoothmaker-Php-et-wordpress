@@ -19,3 +19,12 @@
     border: 3px solid darkgreen;
     color: red;
 }
+
+
+
+/********** tableau des inscrits  ************/
+.my-formulaire-table tbody tr thead:nth-of-type(even){
+    background-color: green;
+}
+
+
