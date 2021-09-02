@@ -2,8 +2,8 @@
 
 class MyFormulaire_Widget extends WP_Widget{
 
-   public function __construct()
-   {
+    public function __construct()
+    {
        /**
         * On appelle le constructeur de la classe parente afin de définir :
         * l'identifiant du widget
